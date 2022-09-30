@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import axios from "axios";
+import "./index.css";
 
-function App() {
+const App = () => {
+  const [items, setItems] = useState([]);
+  const [userSelect, setUserSelect] = useState("");
+  const [isShow, setIsShow] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://pokeapi.co/api/v2/pokemon/")
+      .then((res) => {
+        const values = res.data.results;
+        setItems(
+          values
+            .map((data) => {
+              return {
+                label: data.name,
+                value: data.name,
+              };
+            })
+            .sort((a, b) => a.label.localeCompare(b.label))
+        );
+        console.log(res.data.results);
+      })
+      .catch((error) => {
+        console.error(`Error Message : ${error.message}`);
+      });
+  }, []);
+
+  const handleButton = () => {
+    setIsShow((state) => !state);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1 style={{ textTransform: "uppercase" }}>{isShow ? userSelect : ""}</h1>
+      <button onClick={handleButton} style={{ margin: "auto" }}>
+        {isShow ? "Show Name" : "Hide Button"}
+      </button>
+      <Select options={items} onChange={(e) => setUserSelect(e.value)} />
+    </>
   );
-}
+};
 
 export default App;
