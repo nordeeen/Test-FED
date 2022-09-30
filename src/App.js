@@ -3,6 +3,11 @@ import Select from "react-select";
 import axios from "axios";
 import "./index.css";
 
+//-Public API = https://pokeapi.co/api/v2/pokemon/
+//-Buatlah list dropdown dengan data di atas beserta fitur input di dalamnya.
+//-Filtering data tersebut secara Ascending.
+//-Munculkan output dari hasil pilihan data.
+
 const App = () => {
   const [items, setItems] = useState([]);
   const [userSelect, setUserSelect] = useState("");
